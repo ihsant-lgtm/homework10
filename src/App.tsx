@@ -8,6 +8,7 @@ import { EditDish } from "./pages/edit-dish/EditDish"
 import { useState } from "react"
 import type { IBasketState, IDish } from "./types"
 import { addDishToBasket } from "./utils/basketHelpers"
+import { Basket } from "./pages/basket/Basket"
 
 function App() {
   const [basket, setBasket] = useState<IBasketState>(
@@ -36,6 +37,7 @@ function App() {
           <Route path="/dish/:id" element={<Dish />} />
           <Route path="/dish/create" element={<AddDish />} />
           <Route path="/dish/edit/:id" element={<EditDish />}/>
+          <Route path="/basket" element={<Basket basketState={basket}/>} />
         </Routes>
       </Container>
     </>

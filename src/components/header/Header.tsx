@@ -23,6 +23,10 @@ export const Header = ({ totalCount, totalPrice }: Props) => {
     const goAddDish = () => {
         navigate('/dish/create')
     }
+
+    const goToBasket = () => {
+        navigate('/basket')
+    } 
     return (
         <div>
             <Box sx={{ flexGrow: 1 }}>
@@ -59,6 +63,7 @@ export const Header = ({ totalCount, totalPrice }: Props) => {
                                 </Typography>
                             </div>
                         </div>
+                        <Button color="inherit" onClick={goToBasket}>Basket</Button>
                         <Button color="inherit" onClick={goAddDish}>Add Dish</Button>
                     </Toolbar>
                 </AppBar>
