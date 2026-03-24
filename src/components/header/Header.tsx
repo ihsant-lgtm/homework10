@@ -8,7 +8,12 @@ import FastfoodIcon from '@mui/icons-material/Fastfood';
 import { useNavigate } from 'react-router';
 
 
-export const Header = () => {
+interface Props {
+    totalCount: number
+    totalPrice: number
+}
+
+export const Header = ({ totalCount, totalPrice }: Props) => {
     const navigate = useNavigate();
 
     const goHome = () => {
@@ -36,6 +41,24 @@ export const Header = () => {
                         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                             Plovo
                         </Typography>
+                        <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '8px'
+                        }}>
+                            <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px'
+                            }}>
+                                <Typography>
+                                    Total Count: {totalCount}
+                                </Typography>
+                                <Typography>
+                                    Total Price: {totalPrice}
+                                </Typography>
+                            </div>
+                        </div>
                         <Button color="inherit" onClick={goAddDish}>Add Dish</Button>
                     </Toolbar>
                 </AppBar>

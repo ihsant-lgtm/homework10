@@ -23,14 +23,16 @@ function App() {
     setBasket(updatedBasket)
   }
 
+  console.log(basket)
+
   return (
     <>
-      <Header />
+      <Header totalCount={basket.totalCount} totalPrice={basket.totalPrice}/>
       <Container style={{
         padding: '20px'
       }}>
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home addDishToBasket={handleAddDish}/>} />
           <Route path="/dish/:id" element={<Dish />} />
           <Route path="/dish/create" element={<AddDish />} />
           <Route path="/dish/edit/:id" element={<EditDish />}/>
