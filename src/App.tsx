@@ -5,8 +5,23 @@ import { Dish } from "./pages/dish/Dish"
 import { AddDish } from "./pages/add-dish/AddDish"
 import { Container } from "@mui/material"
 import { EditDish } from "./pages/edit-dish/EditDish"
+import { useState } from "react"
+import type { IBasketState, IDish } from "./types"
+import { addDishToBasket } from "./utils/basketHelpers"
 
 function App() {
+  const [basket, setBasket] = useState<IBasketState>(
+    {
+      items: [],
+      totalCount: 0,
+      totalPrice: 0,
+    }
+  );
+
+  const handleAddDish = (dish: IDish) => {
+    const updatedBasket = addDishToBasket(basket, dish)
+    setBasket(updatedBasket)
+  }
 
   return (
     <>

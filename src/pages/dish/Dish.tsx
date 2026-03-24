@@ -18,6 +18,10 @@ export const Dish = () => {
         loadDish();
     }, [id])
 
+    const goToEditDish = () => {
+        navigate(`/dish/edit/${id}`)
+    }
+
     const handleDelete = async () => {
         if (!id) return;
         await axiosApi.delete(`/dishes/${id}.json`);
@@ -34,6 +38,7 @@ export const Dish = () => {
             <p>{dish.description}</p>
             <p>Price: {dish.price} €</p>
             <Button variant="contained" color="error" onClick={handleDelete}>Delete</Button>
+            <Button variant="contained" color="success" onClick={goToEditDish}>Edit Dish</Button>
         </div>
     )
 }

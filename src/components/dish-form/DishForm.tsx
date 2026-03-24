@@ -13,10 +13,9 @@ interface Props {
     onSubmit: (dish: IDishShort) => void
     loading: boolean
     dish?: IDishShort
-    id?: string
 }
 
-const DishForm = ({ onSubmit, loading, dish, id}: Props) => {
+const DishForm = ({ onSubmit, loading, dish}: Props) => {
     const [formState, setFormState] = useState<IDishShort>(dish || INITIAL_FORM_STATE)
 
     const inputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
