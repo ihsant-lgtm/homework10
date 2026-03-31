@@ -4,13 +4,9 @@ import { axiosApi } from '../../axiosApi';
 import type { IDish, IDishShort } from '../../types';
 import { DishCard } from '../../components/DishCard/DishCard';
 
-interface Props {
-  addDishToBasket: (dish: IDish) => void;
-}
-
 type DishesResponse = { [key: string]: IDishShort };
 
-export const Home = ({ addDishToBasket: _addDishToBasket }: Props) => {
+export const Home = () => {
   const [dishes, setDishes] = useState<IDish[]>([]);
   const [loading, setLoading] = useState(false);
 

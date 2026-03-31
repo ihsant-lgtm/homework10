@@ -1,13 +1,13 @@
 import { Route, Routes } from 'react-router-dom';
 import { Header } from "./components/header/Header";
 import { Home } from "./pages/home/Home";
-import { Dish } from "./pages/dish/Dish";
 import { AddDish } from "./pages/add-dish/AddDish";
 import { Container } from "@mui/material";
 import { EditDish } from "./pages/edit-dish/EditDish";
 import { useState } from "react";
 import type { IBasketState, IDish } from "./types";
 import { Basket } from "./pages/basket/Basket";
+import { DishDetails } from "./containers/DishDetails/DishDetails";
 
 function App() {
   const [basket, setBasket] = useState<IBasketState>({
@@ -92,8 +92,8 @@ function App() {
 
       <Container>
         <Routes>
-          <Route path="/" element={<Home addDishToBasket={handleAddDish} />} />
-          <Route path="/dishes/:id" element={<Dish />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/dishes/:id" element={<DishDetails />} />
           <Route path="/dish/create" element={<AddDish />} />
           <Route path="/edit-dish/:id" element={<EditDish />} />
           <Route
