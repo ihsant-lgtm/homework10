@@ -1,60 +1,66 @@
-import { useCallback, useEffect, useState } from 'react';
-import type { IDishList, IDishShort, IDish } from '../../types.ts';
-import { axiosApi } from '../../axiosApi.ts';
-import { DishCard } from '../../components/dish-card/DishCard.tsx';
-import { Typography } from '@mui/material';
-import styles from './styles.module.css'
+import { useEffect, useState } from 'react';
+import { CircularProgress, Grid, Typography } from '@mui/material';
+import { axiosApi } from '../../axiosApi';
+import type { IDish, IDishShort } from '../../types';
+import { DishCard } from '../../components/DishCard/DishCard';
 
 interface Props {
-    addDishToBasket: (dish: IDish) => void
+  addDishToBasket: (dish: IDish) => void;
 }
 
-export const Home = ({addDishToBasket}:Props) => {
-    const [dishes, setDishes] = useState<IDish[]>([]);
-    const [loading, setLoading] = useState(false);
+type DishesResponse = { [key: string]: IDishShort };
 
-    const fetchDishes = useCallback(async () => {
-        try {
-            setLoading(true);
-            const dishesResponse = await axiosApi.get<IDishList | null>('/dishes.json');
-            const dishes = dishesResponse.data;
+export const Home = ({ addDishToBasket: _addDishToBasket }: Props) => {
+  const [dishes, setDishes] = useState<IDish[]>([]);
+  const [loading, setLoading] = useState(false);
 
-            if (!dishes) {
-                return;
-            }
-            const newDishes: IDish[] = Object.keys(dishes).map(key => {
-                const dish = dishes[key];
-                return {
-                    ...dish,
-                    id: key,
-                };
-            });
-            setDishes(newDishes);
-        } finally {
-            setLoading(false);
+  useEffect(() => {
+    const fetchDishes = async () => {
+      try {
+        setLoading(true);
+        const { data } = await axiosApi.get<DishesResponse | null>('/dishes.json');
+
+        if (!data) {
+          setDishes([]);
+          return;
         }
-    }, []);
 
-    useEffect(() => {
-        void fetchDishes()
-    }, [fetchDishes]);
+        const list: IDish[] = Object.entries(data).map(([id, dish]) => ({
+          ...dish,
+          id,
+        }));
 
-    console.log(dishes)
+        setDishes(list);
+      } catch {
+        setDishes([]);
+      } finally {
+        setLoading(false);
+      }
+    };
 
+    void fetchDishes();
+  }, []);
 
-    return (
-        <div>
-            <Typography variant='h3' align='center'>
-                Dishes list:
-            </Typography>
-            <div className={styles.wrapper}>
-                {
-                    dishes.map((dishItem) => (
-                        <DishCard dish={dishItem} key={dishItem.id} addDishToBasket={addDishToBasket} />
-                    ))
-                }
-            </div>
-        </div>
-    );
+  return (
+    <>
+      <Typography variant="h3" align="center" sx={{ mb: 3 }}>
+        Dishes list
+      </Typography>
+
+      {loading ? (
+        <Grid container justifyContent="center" sx={{ py: 6 }}>
+          <CircularProgress />
+        </Grid>
+      ) : (
+        <Grid container spacing={2}>
+          {dishes.map((dish) => (
+            <Grid key={dish.id} item xs={12} sm={6} md={4}>
+              <DishCard dish={dish} />
+            </Grid>
+          ))}
+        </Grid>
+      )}
+    </>
+  );
 };
 
