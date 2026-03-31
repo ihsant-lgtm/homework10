@@ -1,7 +1,8 @@
 import styles from './style.module.css'
-import { Button, TextField } from '@mui/material';
-import { useState, type ChangeEvent, type SubmitEvent } from 'react';
-import type { IDish, IDishShort } from '../../types';
+import { TextField } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
+import { useEffect, useState, type ChangeEvent, type FormEvent } from 'react';
+import type { IDishShort } from '../../types';
 
 const INITIAL_FORM_STATE: IDishShort = {
     name: '',
@@ -18,12 +19,19 @@ interface Props {
 const DishForm = ({ onSubmit, loading, dish}: Props) => {
     const [formState, setFormState] = useState<IDishShort>(dish || INITIAL_FORM_STATE)
 
+    useEffect(() => {
+        setFormState(dish || INITIAL_FORM_STATE);
+    }, [dish]);
+
     const inputChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
-        setFormState(prevState => ({ ...prevState, [name]: value }));
+        setFormState((prevState) => ({
+            ...prevState,
+            [name]: name === 'price' ? Number(value) : value,
+        }));
     };
 
-    const onFormSubmit = (event: SubmitEvent) => {
+    const onFormSubmit = (event: FormEvent) => {
         event.preventDefault()
         onSubmit(formState)
     }
@@ -52,13 +60,13 @@ const DishForm = ({ onSubmit, loading, dish}: Props) => {
                 type={'number'}
                 onChange={inputChangeHandler}
             />
-            <Button
+            <LoadingButton
                 type={'submit'}
                 variant={'contained'}
                 loading={loading}
             >
                 {dish ? 'Edit Dish' : 'Add Dish'}
-            </Button>
+            </LoadingButton>
         </form>
     );
 };
