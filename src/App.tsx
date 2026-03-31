@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router";
+import { Route, Routes } from 'react-router-dom';
 import { Header } from "./components/header/Header";
 import { Home } from "./pages/home/Home";
 import { Dish } from "./pages/dish/Dish";
@@ -93,9 +93,9 @@ function App() {
       <Container>
         <Routes>
           <Route path="/" element={<Home addDishToBasket={handleAddDish} />} />
-          <Route path="/dish/:id" element={<Dish />} />
+          <Route path="/dishes/:id" element={<Dish />} />
           <Route path="/dish/create" element={<AddDish />} />
-          <Route path="/dish/edit/:id" element={<EditDish />} />
+          <Route path="/edit-dish/:id" element={<EditDish />} />
           <Route
             path="/basket"
             element={
