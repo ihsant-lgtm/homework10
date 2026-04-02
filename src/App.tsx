@@ -50,34 +50,6 @@ function App() {
     });
   };
 
-  const onIncrease = (id: string) => {
-    setBasket((prev) => {
-      const items = prev.items.map((item) =>
-        item.dish.id === id ? { ...item, count: item.count + 1 } : item,
-      );
-
-      return {
-        items,
-        ...recalc(items),
-      };
-    });
-  };
-
-  const onDecrease = (id: string) => {
-    setBasket((prev) => {
-      const items = prev.items
-        .map((item) =>
-          item.dish.id === id ? { ...item, count: item.count - 1 } : item,
-        )
-        .filter((item) => item.count > 0);
-
-      return {
-        items,
-        ...recalc(items),
-      };
-    });
-  };
-
   const clearBasket = () => {
     setBasket({
       items: [],
@@ -101,8 +73,7 @@ function App() {
             element={
               <Basket
                 basketState={basket}
-                onIncrease={onIncrease}
-                onDecrease={onDecrease}
+                setBasket={setBasket}
                 onOrder={() => {
                   clearBasket();
                 }}
