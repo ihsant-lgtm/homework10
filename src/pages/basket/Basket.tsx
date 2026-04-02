@@ -3,7 +3,7 @@ import type { Dispatch, SetStateAction } from "react";
 import { Link } from "react-router";
 import type { IBasketState } from "../../types";
 import { BasketItem } from "../../components/Basket/BasketItem";
-import { OrderForm } from "../../components/order-form/OrderForm";
+import { OrderForm } from "../../components/Basket/OrderForm";
 
 const recalc = (items: IBasketState["items"]) => {
   const totalCount = items.reduce((sum, i) => sum + i.count, 0);

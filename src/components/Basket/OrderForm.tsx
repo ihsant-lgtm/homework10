@@ -1,30 +1,39 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useState } from "react";
 
+export interface OrderFormData {
+  name: string;
+  address: string;
+  phone: string;
+}
+
 interface Props {
   totalPrice: number;
-  onSubmit: (data: any) => void;
+  onSubmit: (data: OrderFormData) => void;
 }
 
 export const OrderForm = ({ totalPrice, onSubmit }: Props) => {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<OrderFormData>({
     name: "",
     address: "",
-    phone: ""
+    phone: "",
   });
 
   const change = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm(prev => ({
+    setForm((prev) => ({
       ...prev,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     }));
   };
 
+  const canSubmit =
+    form.name.trim() !== "" &&
+    form.address.trim() !== "" &&
+    form.phone.trim() !== "";
+
   return (
     <Box>
-      <Typography variant="h6">
-        Доставка
-      </Typography>
+      <Typography variant="h6">Доставка</Typography>
 
       <TextField
         name="name"
@@ -53,11 +62,14 @@ export const OrderForm = ({ totalPrice, onSubmit }: Props) => {
         onChange={change}
       />
 
-      <Typography>Итого: {totalPrice}</Typography>
+      <Typography sx={{ mt: 2 }}>Итого: {totalPrice}</Typography>
 
       <Button
+        type="button"
         variant="contained"
         fullWidth
+        sx={{ mt: 2 }}
+        disabled={!canSubmit}
         onClick={() => onSubmit(form)}
       >
         Оформить заказ
