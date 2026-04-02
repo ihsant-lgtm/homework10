@@ -1,9 +1,13 @@
 import { Box, Container, Typography } from "@mui/material";
 import type { Dispatch, SetStateAction } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import type { IBasketState } from "../../types";
 import { BasketItem } from "../../components/Basket/BasketItem";
-import { OrderForm } from "../../components/Basket/OrderForm";
+import {
+  OrderForm,
+  type OrderFormData,
+} from "../../components/Basket/OrderForm";
+import { axiosApi } from "../../axiosApi";
 
 const recalc = (items: IBasketState["items"]) => {
   const totalCount = items.reduce((sum, i) => sum + i.count, 0);
@@ -14,14 +18,10 @@ const recalc = (items: IBasketState["items"]) => {
 interface Props {
   basketState: IBasketState;
   setBasket: Dispatch<SetStateAction<IBasketState>>;
-  onOrder: (data: any) => void;
 }
 
-export const Basket = ({
-  basketState,
-  setBasket,
-  onOrder
-}: Props) => {
+export const Basket = ({ basketState, setBasket }: Props) => {
+  const navigate = useNavigate();
   const { items } = basketState;
   const totalPrice = items.reduce((sum, item) => {
     return sum + item.dish.price * item.count;
@@ -53,6 +53,19 @@ export const Basket = ({
     });
   };
 
+  const placeOrder = async (customer: OrderFormData) => {
+    await axiosApi.post("/orders.json", {
+      dishes: basketState.items,
+      customer,
+    });
+    setBasket({
+      items: [],
+      totalCount: 0,
+      totalPrice: 0,
+    });
+    navigate("/");
+  };
+
   if (items.length === 0) {
     return (
       <Container>
@@ -82,10 +95,7 @@ export const Basket = ({
           ))}
         </Box>
 
-        <OrderForm
-          totalPrice={totalPrice}
-          onSubmit={onOrder}
-        />
+        <OrderForm totalPrice={totalPrice} onSubmit={placeOrder} />
       </Box>
     </Container>
   );

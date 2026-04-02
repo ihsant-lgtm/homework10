@@ -50,14 +50,6 @@ function App() {
     });
   };
 
-  const clearBasket = () => {
-    setBasket({
-      items: [],
-      totalCount: 0,
-      totalPrice: 0,
-    });
-  };
-
   return (
     <>
       <Header totalCount={basket.totalCount} totalPrice={basket.totalPrice} />
@@ -71,13 +63,7 @@ function App() {
           <Route
             path="/basket"
             element={
-              <Basket
-                basketState={basket}
-                setBasket={setBasket}
-                onOrder={() => {
-                  clearBasket();
-                }}
-              />
+              <Basket basketState={basket} setBasket={setBasket} />
             }
           />
         </Routes>
