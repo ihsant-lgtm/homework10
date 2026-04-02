@@ -1,7 +1,7 @@
 import { Box, Container, Typography } from "@mui/material";
 import { Link } from "react-router";
 import type { IBasketState } from "../../types";
-import { BasketItems } from "../../components/basket-items/BasketItems";
+import { BasketItem } from "../../components/Basket/BasketItem";
 import { OrderForm } from "../../components/order-form/OrderForm";
 
 interface Props {
@@ -17,7 +17,10 @@ export const Basket = ({
   onDecrease,
   onOrder
 }: Props) => {
-  const { items, totalPrice } = basketState;
+  const { items } = basketState;
+  const totalPrice = items.reduce((sum, item) => {
+    return sum + item.dish.price * item.count;
+  }, 0);
 
   if (items.length === 0) {
     return (
@@ -36,11 +39,17 @@ export const Basket = ({
   return (
     <Container>
       <Box display="flex" gap={4}>
-        <BasketItems
-          items={items}
-          onIncrease={onIncrease}
-          onDecrease={onDecrease}
-        />
+        <Box flex={1}>
+          {items.map((item, index) => (
+            <BasketItem
+              key={item.dish.id}
+              item={item}
+              index={index}
+              onIncrease={onIncrease}
+              onDecrease={onDecrease}
+            />
+          ))}
+        </Box>
 
         <OrderForm
           totalPrice={totalPrice}
